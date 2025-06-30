@@ -7,6 +7,7 @@ resource "google_compute_network" "vpc_network" {
 
 resource "google_compute_subnetwork" "default" {
   name          = "my-custom-subnet"
+  project                 = "he-prod-itinfra-incubator"
   ip_cidr_range = "10.0.1.0/24"
   region        = "europe-west6"
   network       = google_compute_network.vpc_network.id
