@@ -3,7 +3,7 @@ resource "google_compute_network" "vpc_network" {
   project                 = "he-prod-itinfra-incubator"
   auto_create_subnetworks = false
   mtu                     = 1460
-  enable_Ula_Internal_Ipv6 = false
+  enable_ula_internal_ipv6 = false
 }
 
 resource "google_compute_subnetwork" "default" {
@@ -13,7 +13,7 @@ resource "google_compute_subnetwork" "default" {
   region        = "europe-west6"
   network       = google_compute_network.vpc_network.id
   allow_Subnet_Cidr_Routes_Overlap = false
-  enable_Flow_Logs                 = false
-  private_Ip_Google_Access         = true
-  stack_Type                       = "IPV4_ONLY"
+  enable_flow_Logs                 = false
+  private_ip_google_access         = true
+  stack_type                       = "IPV4_ONLY"
 }
