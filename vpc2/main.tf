@@ -1,5 +1,6 @@
 resource "google_compute_network" "vpc_network" {
   name                    = "test-vpc1"
+  project                 = "he-prod-itinfra-incubator"
   auto_create_subnetworks = false
   mtu                     = 1460
 }
