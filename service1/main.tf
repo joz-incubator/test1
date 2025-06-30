@@ -13,7 +13,7 @@ resource "google_compute_subnetwork" "default" {
   region        = "europe-west6"
   network       = google_compute_network.vpc_network.id
   allow_Subnet_Cidr_Routes_Overlap = false
-  enable_flow_Logs                 = false
+  enable_flow_logs                 = false
   private_ip_google_access         = true
   stack_type                       = "IPV4_ONLY"
 }
