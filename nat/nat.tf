@@ -1,4 +1,4 @@
-resource "google_compute_router_nat" {
+resource "google_compute_router_nat" "nat" {
   name                                = "service-nat-test1"
   project                             = "he-prod-itinfra-incubator"
   network_tier                        = "STANDARD"
