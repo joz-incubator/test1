@@ -5,8 +5,11 @@ resource "google_compute_router" "router" {
   region                        = "europe-west6"
 
   dynamic "bgp" {
+    for_each = var.bgp != null ? [var.bgp] : []
+    content {
       advertise_mode     = "DEFAULT"
       advertise_groups = ["ALL_SUBNETS"]
+    }
   }
 
 }
