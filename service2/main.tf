@@ -1,50 +1,35 @@
-resource "google_compute_instance" "default" {
+resource "google_compute_network" "vpc_network" {
   project = "he-prod-itinfra-incubator"
-  name         = "my-vm"
-  machine_type = "n1-standard-1"
-  zone         = "us-central1-a"
-
-  boot_disk {
-    initialize_params {
-      image = "ubuntu-minimal-2210-kinetic-amd64-v20230126"
-    }
-  }
-
-  network_interface {
-    network = "default"
-    access_config {}
-  }
-}
-
-
-resource "google_compute_network" "custom" {
-  project = "he-prod-itinfra-incubator"
-  name                    = "my-network"
+  name                    = "service-vpc-test1"
   auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "custom" {
+resource "google_compute_subnetwork" "vpc_subnet" {
   project = "he-prod-itinfra-incubator"
-  name          = "my-subnet"
+  name          = "service-subn-test1"
   ip_cidr_range = "10.0.1.0/24"
-  region        = "europe-west1"
-  network       = google_compute_network.custom.id
+  region        = "europe-west6"
+  network       = google_compute_network.vpc_network.id
 }
 
 
-resource "google_compute_instance" "custom_subnet" {
+resource "google_compute_instance" "compute_vm" {
   project = "he-prod-itinfra-incubator"
-  name         = "my-vm-instance"
+  name         = "service-vm-test1"
   tags         = ["allow-ssh"]
-  zone         = "europe-west1-b"
-  machine_type = "e2-small"
+  zone         = "europe-west6-c"
+  machine_type = "e2-micro"
   network_interface {
-    network    = google_compute_network.custom.id
-    subnetwork = google_compute_subnetwork.custom.id
+    network    = google_compute_network.vpc_network.id
+    subnetwork = google_compute_subnetwork.vpc_subnet.id
   }
   boot_disk {
+    auto_delete = true
     initialize_params {
-      image = "debian-cloud/debian-12"
+      image = "projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2504-plucky-amd64-v20250624"
+      size  = 10
+      type  = "pd-balanced"
     }
+    mode = "READ_WRITE"
   }
 }
