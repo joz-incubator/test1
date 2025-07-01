@@ -14,6 +14,10 @@ variable "cidr" {
   default = "10.0.0.0/24"
 }
 
-variable "fwdest" {
+variable "fwdestnets" {
   default = ["0.0.0.0/0"]
+}
+
+variable "fwdestcount" {
+  default = 1
 }
