@@ -17,7 +17,6 @@ resource "google_compute_subnetwork" "subnet" {
 resource "google_compute_firewall" "egress_https" {
   name    = "egress-https"
   network = google_compute_network.vpc_network.name
-
   direction = "EGRESS"
   allow {
     protocol = "tcp"
@@ -30,7 +29,6 @@ resource "google_compute_firewall" "egress_https" {
 resource "google_compute_firewall" "ingress_ssh" {
   name    = "ingress-ssh"
   network = google_compute_network.vpc_network.name
-
   direction = "INGRESS"
   allow {
     protocol = "tcp"
@@ -42,12 +40,20 @@ resource "google_compute_firewall" "ingress_ssh" {
 
 resource "google_compute_instance" "vm_instance" {
   name         = "ubuntu-vm"
+  zone         = "europe-west6-c"
   machine_type = "e2-micro"
-  zone         = "us-central1-a"
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-os-cloud/ubuntu-2204-lts"
+      image = "projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2504-plucky-amd64-v20250624"
+      size  = 10
+      type  = "pd-balanced"
+      }
+
+    shielded_instance_config {
+      enable_integrity_monitoring = true
+      enable_secure_boot          = true
+      enable_vtpm                 = true
     }
   }
 
