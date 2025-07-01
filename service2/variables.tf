@@ -7,7 +7,7 @@ variable "zone" {
 }
 
 variable "customer" {
-  default = "whatever3"
+  default = "verygood"
 }
 
 variable "cidr" {
