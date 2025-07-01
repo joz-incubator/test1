@@ -4,6 +4,7 @@ resource "google_compute_network" "vpc_network" {
   auto_create_subnetworks = false
   mtu                     = 1460
   enable_ula_internal_ipv6 = false
+  depends_on               = [google_compute_subnetwork.vpc_subnet]
 }
 
 resource "google_compute_subnetwork" "vpc_subnet" {
@@ -14,8 +15,8 @@ resource "google_compute_subnetwork" "vpc_subnet" {
   network       = google_compute_network.vpc_network.id
   private_ip_google_access   = true
   private_ipv6_google_access = false
-  enable_flow_logs                 = false
-  stack_type                       = "IPV4_ONLY"
+  enable_flow_logs           = false
+  stack_type                 = "IPV4_ONLY"
 }
 
 resource "google_compute_router" "router" {
@@ -23,6 +24,7 @@ resource "google_compute_router" "router" {
   project                       = "he-prod-itinfra-incubator"
   network                       = "service-vpc-test1"
   region                        = "europe-west6"
+  depends_on                    = [google_compute_network.vpc_network]
 }
 
 resource "google_compute_router_nat" "nat" {
@@ -32,4 +34,5 @@ resource "google_compute_router_nat" "nat" {
   region                              = "europe-west6"
   nat_ip_allocate_option              = "AUTO_ONLY"
   source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+  depends_on                          = [google_compute_router.router]
 }
