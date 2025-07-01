@@ -18,7 +18,7 @@ resource "google_compute_subnetwork" "subnet" {
 resource "google_compute_firewall" "egress_https" {
   name    = "egress-${var.customer}"
   network = google_compute_network.vpc_network.name
-  priority = 899
+  priority = 900
   direction = "EGRESS"
   allow {
     protocol = "tcp"
@@ -28,17 +28,38 @@ resource "google_compute_firewall" "egress_https" {
   destination_ranges = slice(var.fwdestnets, 0, var.fwdestcount)
 }
 
+resource "google_compute_firewall" "egress_deny" {
+  name    = "denyout-${var.customer}"
+  network = google_compute_network.vpc_network.name
+  priority = 1000
+  direction = "EGRESS"
+  deny {
+    protocol = "all"
+  }
+  destination_ranges = ["0.0.0.0/0"]
+}
+
 resource "google_compute_firewall" "ingress_ssh" {
   name    = "ingress-${var.customer}"
   network = google_compute_network.vpc_network.name
-  priority = 900
+  priority = 901
   direction = "INGRESS"
   allow {
     protocol = "tcp"
     ports    = ["22"]
   }
-
   source_ranges = ["35.235.240.0/20"]
+}
+
+resource "google_compute_firewall" "ingress_deny" {
+  name    = "denyin-${var.customer}"
+  network = google_compute_network.vpc_network.name
+  priority = 1001
+  direction = "INGRESS"
+  deny {
+    protocol = "all"
+  }
+  destination_ranges = ["0.0.0.0/0"]
 }
 
 resource "google_compute_instance" "vm_instance" {
