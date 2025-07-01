@@ -15,7 +15,7 @@ resource "google_compute_subnetwork" "vpc_subnet" {
   network       = google_compute_network.vpc_network.id
 }
 
-resource "google_compute_firewall" "vpc_rules" {
+resource "google_compute_firewall" "vpc_egress" {
   name        = "service-fw-test1"
   network     = google_compute_network.vpc_network.id
   direction   = "EGRESS"
