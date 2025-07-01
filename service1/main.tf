@@ -59,7 +59,7 @@ resource "google_compute_firewall" "ingress_deny" {
   deny {
     protocol = "all"
   }
-  destination_ranges = ["0.0.0.0/0"]
+  source_ranges = ["0.0.0.0/0"]
 }
 
 resource "google_compute_instance" "vm_instance" {
