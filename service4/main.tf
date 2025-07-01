@@ -44,7 +44,7 @@ resource "google_compute_firewall" "ingress_ssh" {
 resource "google_compute_instance" "vm_instance" {
   name         = "ubuntu-vm"
   zone         = "europe-west6-c"
-  depends_on   = [google_compute_subnetwork.vpc_subnet]
+  depends_on   = [google_compute_subnetwork.subnet]
   machine_type = "e2-micro"
 
   boot_disk {
