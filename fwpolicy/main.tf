@@ -20,3 +20,28 @@ resource "google_compute_firewall" "default" {
   direction     = "EGRESS"
   priority      = 899
 }
+resource "google_compute_firewall_policy" "example_policy" {
+  name     = "example-firewall-policy"
+  short_name = "example-policy"
+  description = "Example firewall policy"
+}
+
+resource "google_compute_firewall_policy_rule" "example_rule" {
+  firewall_policy = google_compute_firewall_policy.example_policy.name
+  priority        = 899
+  action          = "allow"
+  direction       = "EGRESS"
+  match {
+    src_ip_ranges = ["10.0.0.0/8"]
+    layer4_configs {
+      ip_protocol = "tcp"
+    }
+  }
+  target_resources = ["589375120734031079"]
+}
+
+resource "google_compute_firewall_policy_association" "example_association" {
+  name            = "example-association"
+  attachment_target = "589375120734031079"
+  firewall_policy = google_compute_firewall_policy.example_policy.name
+}
