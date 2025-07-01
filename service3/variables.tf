@@ -9,3 +9,7 @@ variable "zone" {
 variable "customer" {
   default = "whatever3"
 }
+
+variable "cidr" {
+  default = "10.0.0.0/24"
+}
