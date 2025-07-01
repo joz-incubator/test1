@@ -17,3 +17,12 @@ resource "google_compute_subnetwork" "default" {
   enable_flow_logs                 = false
   stack_type                       = "IPV4_ONLY"
 }
+
+resource "google_compute_router" "router" {
+  name                          = "service-cloud-router"
+  project                       = "he-prod-itinfra-incubator"
+  network                       = "service-vpc-test1"
+  region                        = "europe-west6"
+}
+
+
