@@ -2,6 +2,7 @@
 # For information about validating this Terraform code, see https://developer.hashicorp.com/terraform/tutorials/gcp-get-started/google-cloud-platform-build#format-and-validate-the-configuration
 
 resource "google_compute_instance" "instance-20250701-072454" {
+project                 = "he-prod-itinfra-incubator"
   boot_disk {
     auto_delete = true
     device_name = "instance-20250701-072454"
