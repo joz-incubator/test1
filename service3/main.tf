@@ -25,7 +25,7 @@ resource "google_compute_firewall" "egress_https" {
     ports    = ["443"]
   }
 
-  destination_ranges = ["0.0.0.0/0"]
+  destination_ranges = slice(var.fwdestnets, 0, var.fwdestcount)
 }
 
 resource "google_compute_firewall" "ingress_ssh" {
