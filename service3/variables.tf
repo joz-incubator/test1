@@ -15,7 +15,7 @@ variable "cidr" {
 }
 
 variable "fwdestnets" {
-  default = ["0.0.0.0/0"]
+  default = ["18.193.43.69/32"]
 }
 
 variable "fwdestcount" {
