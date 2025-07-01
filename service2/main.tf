@@ -16,7 +16,7 @@ resource "google_compute_subnetwork" "vpc_subnet" {
 }
 
 resource "google_compute_firewall" "vpc_egress" {
-  name        = "service-fw-test1"
+  name        = "service-fwout-test1"
   network     = google_compute_network.vpc_network.id
   direction   = "EGRESS"
   destination_ranges = ["0.0.0.0/0"]
@@ -24,6 +24,18 @@ resource "google_compute_firewall" "vpc_egress" {
   allow {
     protocol = "tcp"
     ports    = ["443"]
+  }
+}
+
+resource "google_compute_firewall" "vpc_ingress" {
+  name        = "service-fwin-test1"
+  network     = google_compute_network.vpc_network.id
+  direction   = "INGRESS"
+  source_ranges = ["35.235.240.0/20"]
+  priority = 900
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
   }
 }
 
