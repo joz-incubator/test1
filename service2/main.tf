@@ -1,4 +1,5 @@
 resource "google_compute_instance" "default" {
+  project = "he-prod-itinfra-incubator"
   name         = "my-vm"
   machine_type = "n1-standard-1"
   zone         = "us-central1-a"
@@ -17,11 +18,13 @@ resource "google_compute_instance" "default" {
 
 
 resource "google_compute_network" "custom" {
+  project = "he-prod-itinfra-incubator"
   name                    = "my-network"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "custom" {
+  project = "he-prod-itinfra-incubator"
   name          = "my-subnet"
   ip_cidr_range = "10.0.1.0/24"
   region        = "europe-west1"
@@ -30,6 +33,7 @@ resource "google_compute_subnetwork" "custom" {
 
 
 resource "google_compute_instance" "custom_subnet" {
+  project = "he-prod-itinfra-incubator"
   name         = "my-vm-instance"
   tags         = ["allow-ssh"]
   zone         = "europe-west1-b"
