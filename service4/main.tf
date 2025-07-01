@@ -64,10 +64,6 @@ resource "google_compute_instance" "vm_instance" {
   network_interface {
     network    = google_compute_network.vpc_network.id
     subnetwork = google_compute_subnetwork.subnet.id
-    access_config {
-      // No public IP will be assigned
-      nat_ip = null
-    }
   }
 }
 
