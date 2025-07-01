@@ -15,6 +15,7 @@ resource "google_compute_subnetwork" "vpc_subnet" {
 
 resource "google_compute_instance" "compute_vm" {
   project = "he-prod-itinfra-incubator"
+  depends_on   = [google_compute_subnetwork.vpc_subnet]
   name         = "service-vm-test1"
   tags         = ["allow-ssh"]
   zone         = "europe-west6-c"
