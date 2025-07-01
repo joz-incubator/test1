@@ -3,15 +3,15 @@ variable "region" {
 }
 
 variable "zone" {
-  default = "europe-west6-c"
+  default = "europe-west6-a"
 }
 
 variable "customer" {
-  default = "whatever3"
+  default = "cutoomer"
 }
 
 variable "cidr" {
-  default = "10.0.0.0/24"
+  default = "192.168.0.0/16"
 }
 
 variable "fwdestnets" {
