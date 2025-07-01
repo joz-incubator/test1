@@ -7,7 +7,7 @@ resource "google_compute_network" "vpc_network" {
 }
 
 resource "google_compute_subnetwork" "vpc_subnet" {
-  name          = "service-vpc-test1"
+  name          = "service-subn-test1"
   project       = "he-prod-itinfra-incubator"
   ip_cidr_range = "10.0.1.0/24"
   region        = "europe-west6"
@@ -18,14 +18,16 @@ resource "google_compute_subnetwork" "vpc_subnet" {
   stack_type                 = "IPV4_ONLY"
 }
 
-resource "google_compute_instance" "default" {
-  name         = "my-vm"
-  machine_type = "n1-standard-1"
-  zone         = "us-central1-a"
+resource "google_compute_instance" "compute_vm" {
+  project                 = "he-prod-itinfra-incubator"
+  name                    = "service-vm-test1"
+  machine_type            = "e2-medium"
+  zone                    = "europe-west6-c"
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-minimal-2210-kinetic-amd64-v20230126"
+      image = "debian-12-bookworm-v20250610"
+      size  = 10
     }
   }
 
@@ -33,4 +35,12 @@ resource "google_compute_instance" "default" {
     network = "default"
     access_config {}
   }
+
+  shielded_instance_config {
+    enable_integrity_monitoring = true
+    enable_secure_boot          = true
+    enable_vtpm                 = true
+  }
+
+
 }
