@@ -6,7 +6,7 @@ resource "google_compute_network" "vpc_network" {
   enable_ula_internal_ipv6 = false
 }
 
-resource "google_compute_subnetwork" "default" {
+resource "google_compute_subnetwork" "vpc_subnet" {
   name          = "service-vpc-test1"
   project       = "he-prod-itinfra-incubator"
   ip_cidr_range = "10.0.1.0/24"
@@ -25,4 +25,11 @@ resource "google_compute_router" "router" {
   region                        = "europe-west6"
 }
 
-
+resource "google_compute_router_nat" "nat" {
+  name                                = "service-nat-test1"
+  project                             = "he-prod-itinfra-incubator"
+  router                              = "service-cloud-router"
+  region                              = "europe-west6"
+  nat_ip_allocate_option              = "AUTO_ONLY"
+  source_subnetwork_ip_ranges_to_nat  = "ALL_SUBNETWORKS_ALL_IP_RANGES"
+}
