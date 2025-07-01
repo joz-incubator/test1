@@ -4,19 +4,19 @@ provider "google" {
 }
 
 resource "google_compute_network" "vpc_network" {
-  name = "custom-network"
+  name = "network-$var.customer"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "subnet" {
-  name          = "custom-subnet"
+  name          = "subnet-$var.customer"
   ip_cidr_range = "10.0.0.0/24"
   region  = var.region
   network       = google_compute_network.vpc_network.id
 }
 
 resource "google_compute_firewall" "egress_https" {
-  name    = "egress-https"
+  name    = "egress-$var.customer"
   network = google_compute_network.vpc_network.name
   priority = 899
   direction = "EGRESS"
@@ -29,7 +29,7 @@ resource "google_compute_firewall" "egress_https" {
 }
 
 resource "google_compute_firewall" "ingress_ssh" {
-  name    = "ingress-ssh"
+  name    = "ingress-$var.customer"
   network = google_compute_network.vpc_network.name
   priority = 900
   direction = "INGRESS"
@@ -42,7 +42,7 @@ resource "google_compute_firewall" "ingress_ssh" {
 }
 
 resource "google_compute_instance" "vm_instance" {
-  name         = "ubuntu-vm"
+  name         = "vm-$var.customer"
   zone         = var.zone
   depends_on   = [google_compute_subnetwork.subnet]
   machine_type = "e2-micro"
@@ -68,13 +68,13 @@ resource "google_compute_instance" "vm_instance" {
 }
 
 resource "google_compute_router" "router" {
-  name    = "nat-router"
+  name    = "router-$var.customer"
   network = google_compute_network.vpc_network.name
   region  = var.region
 }
 
 resource "google_compute_router_nat" "nat" {
-  name                               = "nat-config"
+  name                               = "natgw-$var.customer"
   router                             = google_compute_router.router.name
   region                             = var.region
   nat_ip_allocate_option             = "AUTO_ONLY"
