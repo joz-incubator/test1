@@ -1,20 +1,33 @@
-resource "google_compute_network" "vpc_network" {
+provider "google" {
   project = "he-prod-itinfra-incubator"
+  region  = "europe-west6"
+}
+
+resource "google_compute_network" "vpc_network" {
   name                    = "service-vpc-test1"
   auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "vpc_subnet" {
-  project = "he-prod-itinfra-incubator"
   name          = "service-subn-test1"
   ip_cidr_range = "10.0.1.0/24"
   region        = "europe-west6"
   network       = google_compute_network.vpc_network.id
 }
 
+resource "google_compute_firewall" "vpc_rules" {
+  name        = "service-fw-test1"
+  network     = google_compute_network.vpc_network.id
+  direction   = "EGRESS"
+  destination_ranges = ["0.0.0.0/0"]
+  priority = 899
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+}
 
 resource "google_compute_instance" "compute_vm" {
-  project = "he-prod-itinfra-incubator"
   depends_on   = [google_compute_subnetwork.vpc_subnet]
   name         = "service-vm-test1"
   tags         = ["allow-ssh"]
