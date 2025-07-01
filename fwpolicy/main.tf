@@ -3,8 +3,17 @@ provider "google" {
   region  = "europe-west6"
 }
 
-resource "google_compute_firewall_policy" "default" {
-  parent      = "organizations/30668948301"
-  short_name  = "fw-policy"
-  description = "Resource created for Terraform acceptance testing"
+
+resource "google_compute_firewall" "rules" {
+  name        = "my-firewall-rule"
+  network     = "service-vpc-test1"
+  description = "Creates firewall rule targeting tagged instances"
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
+  }
+
+  source_ranges = ["0.0.0.0/0"]
+  target_tags   = ["web"]
 }
