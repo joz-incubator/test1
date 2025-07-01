@@ -1,6 +1,6 @@
 provider "google" {
   project = "he-prod-itinfra-incubator"
-  region  = "europe-west6"
+  region  = var.region
 }
 
 resource "google_compute_network" "vpc_network" {
@@ -11,7 +11,7 @@ resource "google_compute_network" "vpc_network" {
 resource "google_compute_subnetwork" "subnet" {
   name          = "custom-subnet"
   ip_cidr_range = "10.0.0.0/24"
-  region        = "europe-west6"
+  region  = var.region
   network       = google_compute_network.vpc_network.id
 }
 
@@ -43,7 +43,7 @@ resource "google_compute_firewall" "ingress_ssh" {
 
 resource "google_compute_instance" "vm_instance" {
   name         = "ubuntu-vm"
-  zone         = "europe-west6-c"
+  zone         = var.zone
   depends_on   = [google_compute_subnetwork.subnet]
   machine_type = "e2-micro"
 
@@ -70,13 +70,13 @@ resource "google_compute_instance" "vm_instance" {
 resource "google_compute_router" "router" {
   name    = "nat-router"
   network = google_compute_network.vpc_network.name
-  region  = "europe-west6"
+  region  = var.region
 }
 
 resource "google_compute_router_nat" "nat" {
   name                               = "nat-config"
   router                             = google_compute_router.router.name
-  region                             = "europe-west6"
+  region                             = var.region
   nat_ip_allocate_option             = "AUTO_ONLY"
   source_subnetwork_ip_ranges_to_nat = "ALL_SUBNETWORKS_ALL_IP_RANGES"
 }
