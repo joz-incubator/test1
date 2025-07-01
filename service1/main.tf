@@ -4,7 +4,6 @@ resource "google_compute_network" "vpc_network" {
   auto_create_subnetworks = false
   mtu                     = 1460
   enable_ula_internal_ipv6 = false
-  depends_on               = [google_compute_subnetwork.vpc_subnet]
 }
 
 resource "google_compute_subnetwork" "vpc_subnet" {
