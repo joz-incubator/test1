@@ -5,6 +5,7 @@ provider "google" {
 
 resource "google_compute_network" "vpc_network" {
   name = "custom-network"
+  auto_create_subnetworks = false
 }
 
 resource "google_compute_subnetwork" "subnet" {
@@ -17,6 +18,7 @@ resource "google_compute_subnetwork" "subnet" {
 resource "google_compute_firewall" "egress_https" {
   name    = "egress-https"
   network = google_compute_network.vpc_network.name
+  priority = 899
   direction = "EGRESS"
   allow {
     protocol = "tcp"
@@ -29,6 +31,7 @@ resource "google_compute_firewall" "egress_https" {
 resource "google_compute_firewall" "ingress_ssh" {
   name    = "ingress-ssh"
   network = google_compute_network.vpc_network.name
+  priority = 900
   direction = "INGRESS"
   allow {
     protocol = "tcp"
@@ -41,6 +44,7 @@ resource "google_compute_firewall" "ingress_ssh" {
 resource "google_compute_instance" "vm_instance" {
   name         = "ubuntu-vm"
   zone         = "europe-west6-c"
+  depends_on   = [google_compute_subnetwork.subnet]
   machine_type = "e2-micro"
 
   boot_disk {
@@ -60,13 +64,7 @@ resource "google_compute_instance" "vm_instance" {
   network_interface {
     network    = google_compute_network.vpc_network.id
     subnetwork = google_compute_subnetwork.subnet.id
-    access_config {
-      // No public IP will be assigned
-      nat_ip = null
-    }
   }
-
-  tags = ["vm"]
 }
 
 resource "google_compute_router" "router" {
