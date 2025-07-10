@@ -66,11 +66,11 @@ resource "google_compute_instance" "vm_instance" {
   name         = "vm-${var.customer}"
   zone         = var.zone
   depends_on   = [google_compute_subnetwork.subnet]
-  machine_type = "e2-micro"
+  machine_type = var.vmtype
 
   boot_disk {
     initialize_params {
-      image = "projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2504-plucky-amd64-v20250624"
+      image = var.vmimage
       size  = 10
       type  = "pd-balanced"
       }
