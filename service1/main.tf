@@ -46,7 +46,7 @@ resource "google_compute_firewall" "ingress_ssh" {
   direction = "INGRESS"
   allow {
     protocol = "tcp"
-    ports    = ["22"]
+    ports    = ["22", "3389"]
   }
   source_ranges = ["35.235.240.0/20"]
 }
