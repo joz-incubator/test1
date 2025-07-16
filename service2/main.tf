@@ -108,7 +108,7 @@ resource "google_compute_instance" "vm_instance" {
     systemctl enable xrdp
     systemctl start xrdp
     ufw allow 3389/tcp
-    apt install xfce4
+    apt install xfce4 -y
     touch /var/log/startup-script-done
   EOT
 }
