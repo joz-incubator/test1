@@ -16,6 +16,18 @@ resource "google_compute_subnetwork" "subnet" {
   network       = google_compute_network.vpc_network.id
 }
 
+resource "google_compute_firewall" "egress_internet" {
+  name    = "egress-internet"
+  network = google_compute_network.vpc_network.name
+  priority = 700
+  direction = "EGRESS"
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+  destination_ranges = ["0.0.0.0/0"]
+}
+
 resource "google_compute_firewall" "egress_https" {
   name    = "egress-${var.customer}"
   network = google_compute_network.vpc_network.name
