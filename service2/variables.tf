@@ -21,3 +21,11 @@ variable "fwdestnets" {
 variable "fwdestcount" {
   default = 1
 }
+
+variable "vmtype" {
+  default = "e2-medium"
+}
+
+variable "vmimage" {
+  default = "projects/ubuntu-os-cloud/global/images/ubuntu-2504-plucky-amd64-v20250701"
+}
