@@ -103,7 +103,7 @@ resource "google_compute_instance" "vm_instance" {
   metadata_startup_script = <<-EOT
     #!/bin/bash
     apt update
-    apt upgrade
+    apt upgrade -y
     apt install xrdp -y
     systemctl enable xrdp
     systemctl start xrdp
