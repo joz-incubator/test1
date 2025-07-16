@@ -87,6 +87,18 @@ resource "google_compute_instance" "vm_instance" {
     network    = google_compute_network.vpc_network.id
     subnetwork = google_compute_subnetwork.subnet.id
   }
+
+  metadata_startup_script = <<-EOT
+    #!/bin/bash
+    apt update
+    apt upgrade
+    apt install xrdp -y
+    systemctl enable xrdp
+    systemctl start xrdp
+    ufw allow 3389/tcp
+    apt install xfce4
+    touch /var/log/startup-script-done
+  EOT
 }
 
 resource "google_compute_router" "router" {
