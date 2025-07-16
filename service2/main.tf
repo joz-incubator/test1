@@ -102,6 +102,7 @@ resource "google_compute_instance" "vm_instance" {
 
   metadata_startup_script = <<-EOT
     #!/bin/bash
+    echo "Startup script started at $(date)" > /var/log/startup-output.txt
     apt update
     apt upgrade -y
     apt install xrdp -y
@@ -109,7 +110,7 @@ resource "google_compute_instance" "vm_instance" {
     systemctl start xrdp
     ufw allow 3389/tcp
     apt install xfce4 -y
-    touch /var/log/startup-script-done
+    echo "Startup script completed at $(date)" >> /var/log/startup-output.txt
   EOT
 }
 
