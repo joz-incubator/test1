@@ -1,3 +1,4 @@
+
 provider "google" {
   project = "he-prod-itinfra-incubator"
   region  = var.region
@@ -46,7 +47,7 @@ resource "google_compute_firewall" "ingress_ssh" {
   direction = "INGRESS"
   allow {
     protocol = "tcp"
-    ports    = ["22"]
+    ports    = ["22", "3389"]
   }
   source_ranges = ["35.235.240.0/20"]
 }
@@ -66,11 +67,11 @@ resource "google_compute_instance" "vm_instance" {
   name         = "vm-${var.customer}"
   zone         = var.zone
   depends_on   = [google_compute_subnetwork.subnet]
-  machine_type = "e2-micro"
+  machine_type = var.vmtype
 
   boot_disk {
     initialize_params {
-      image = "projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2504-plucky-amd64-v20250624"
+      image = var.vmimage
       size  = 10
       type  = "pd-balanced"
       }
