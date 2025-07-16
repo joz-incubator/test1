@@ -111,6 +111,7 @@ resource "google_compute_instance" "vm_instance" {
     ufw allow 3389/tcp
     apt install xfce4 -y
     echo "Startup script completed at $(date)" >> /var/log/startup-output.txt
+    reboot
   EOT
 }
 
