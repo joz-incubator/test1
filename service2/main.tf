@@ -105,11 +105,6 @@ resource "google_compute_instance" "vm_instance" {
     echo "Startup script started at $(date)" > /var/log/startup-output.txt
     apt update
     apt upgrade -y
-    apt install xrdp -y
-    systemctl enable xrdp
-    systemctl start xrdp
-    ufw allow 3389/tcp
-    apt install xfce4 -y
     echo "Startup script completed at $(date)" >> /var/log/startup-output.txt
     reboot
   EOT
