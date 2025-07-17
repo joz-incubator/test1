@@ -1,5 +1,4 @@
 
-
 provider "google" {
   project = "he-prod-itinfra-incubator"
   region  = var.region
@@ -101,6 +100,14 @@ resource "google_compute_instance" "vm_instance" {
     subnetwork = google_compute_subnetwork.subnet.id
   }
 
+  metadata_startup_script = <<-EOT
+    #!/bin/bash
+    echo "Startup script started at $(date)" > /var/log/startup-output.txt
+    apt update
+    apt upgrade -y
+    echo "Startup script completed at $(date)" >> /var/log/startup-output.txt
+    reboot
+  EOT
 }
 
 resource "google_compute_router" "router" {
