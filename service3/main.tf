@@ -1,3 +1,5 @@
+
+
 provider "google" {
   project = "he-prod-itinfra-incubator"
   region  = var.region
@@ -13,6 +15,18 @@ resource "google_compute_subnetwork" "subnet" {
   ip_cidr_range = var.cidr
   region  = var.region
   network       = google_compute_network.vpc_network.id
+}
+
+resource "google_compute_firewall" "egress_internet" {
+  name    = "egress-internet"
+  network = google_compute_network.vpc_network.name
+  priority = 700
+  direction = "EGRESS"
+  allow {
+    protocol = "tcp"
+    ports    = ["80", "443"]
+  }
+  destination_ranges = ["0.0.0.0/0"]
 }
 
 resource "google_compute_firewall" "egress_https" {
@@ -46,7 +60,7 @@ resource "google_compute_firewall" "ingress_ssh" {
   direction = "INGRESS"
   allow {
     protocol = "tcp"
-    ports    = ["22"]
+    ports    = ["22", "3389"]
   }
   source_ranges = ["35.235.240.0/20"]
 }
@@ -66,11 +80,11 @@ resource "google_compute_instance" "vm_instance" {
   name         = "vm-${var.customer}"
   zone         = var.zone
   depends_on   = [google_compute_subnetwork.subnet]
-  machine_type = "e2-micro"
+  machine_type = var.vmtype
 
   boot_disk {
     initialize_params {
-      image = "projects/ubuntu-os-cloud/global/images/ubuntu-minimal-2504-plucky-amd64-v20250624"
+      image = var.vmimage
       size  = 10
       type  = "pd-balanced"
       }
@@ -86,6 +100,7 @@ resource "google_compute_instance" "vm_instance" {
     network    = google_compute_network.vpc_network.id
     subnetwork = google_compute_subnetwork.subnet.id
   }
+
 }
 
 resource "google_compute_router" "router" {
