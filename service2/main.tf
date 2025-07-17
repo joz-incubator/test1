@@ -106,7 +106,6 @@ resource "google_compute_instance" "vm_instance" {
     apt update
     apt upgrade -y
     echo "Startup script completed at $(date)" >> /var/log/startup-output.txt
-    reboot
   EOT
 }
 
