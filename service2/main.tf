@@ -80,6 +80,7 @@ resource "google_compute_instance" "vm_instance" {
   zone         = var.zone
   depends_on   = [google_compute_subnetwork.subnet]
   machine_type = var.vmtype
+  enable_display = true
 
   boot_disk {
     initialize_params {
