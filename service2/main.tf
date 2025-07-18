@@ -106,6 +106,11 @@ resource "google_compute_instance" "vm_instance" {
     echo "Startup script started at $(date)" > /var/log/startup-output.txt
     apt update
     apt upgrade -y
+    apt install xfce4 xfce4-goodies -y
+    apt install xrdp -y
+    systemctl status xrdp > /var/log/startup-output.txt
+    echo "xfce4-session" | tee .xsession
+    systemctl restart xrdp > /var/log/startup-output.txt
     echo "Startup script completed at $(date)" >> /var/log/startup-output.txt
   EOT
 }
